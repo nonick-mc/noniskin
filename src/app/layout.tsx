@@ -1,4 +1,4 @@
-import { Geist_Mono, Noto_Sans_JP } from 'next/font/google';
+import { Doto, Geist_Mono, Noto_Sans_JP } from 'next/font/google';
 
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -11,6 +11,11 @@ const fontMono = Geist_Mono({
   variable: '--font-mono',
 });
 
+const doto = Doto({
+  subsets: ['latin'],
+  variable: '--font-doto',
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,7 +25,13 @@ export default function RootLayout({
     <html
       lang='ja'
       suppressHydrationWarning
-      className={cn('antialiased', fontMono.variable, 'font-sans', notoSansJP.variable)}
+      className={cn(
+        'antialiased',
+        fontMono.variable,
+        doto.variable,
+        'font-sans',
+        notoSansJP.variable,
+      )}
     >
       <body>
         <ThemeProvider>{children}</ThemeProvider>
