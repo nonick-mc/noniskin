@@ -1,5 +1,4 @@
 import JSZip from 'jszip';
-import geometry from '@/structures/geometry.json';
 import type {
   BodyType,
   Cape,
@@ -117,7 +116,6 @@ export async function buildSkinPack({
 
   zip.file('manifest.json', JSON.stringify(buildManifest(packName), null, 2));
   zip.file('skins.json', JSON.stringify(buildSkinsJson(entries, skins, capes), null, 2));
-  zip.file('geometry.json', JSON.stringify(geometry, null, 2));
   zip.file('texts/en_US.lang', buildLangFile(entries, skins, capes));
 
   for (const cape of capes) {
