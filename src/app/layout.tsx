@@ -1,6 +1,7 @@
 import { Doto, Geist_Mono, Noto_Sans_JP } from 'next/font/google';
 
 import './globals.css';
+import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
@@ -16,6 +17,11 @@ const doto = Doto({
   subsets: ['latin'],
   variable: '--font-doto',
 });
+
+export const metadata: Metadata = {
+  title: 'noniskin',
+  description: 'カスタムマント付きのスキンパックを作成するWebアプリ',
+};
 
 export default function RootLayout({
   children,
