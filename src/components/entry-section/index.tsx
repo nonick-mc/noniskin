@@ -1,11 +1,7 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { PaletteIcon, PlusIcon } from 'lucide-react';
-import { useEffect } from 'react';
-import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useSkinPackContext } from '@/app/context';
-import { createEntriesFormSchema } from '@/app/schema';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -22,36 +18,22 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
-import type { PackEntry } from '@/types/skin-pack';
 import { EntryCard } from './entry-card';
 
-const entriesFormSchema = createEntriesFormSchema();
-
 export function EntrySection() {
-  const { skins, capes, setEntries } = useSkinPackContext();
+  const { skins, capes, entries, setEntries } = useSkinPackContext();
 
-  const form = useForm({
-    resolver: zodResolver(entriesFormSchema),
-    defaultValues: {
-      entries: [] as { id: string; skinId: string | null; capeId: string | null }[],
-    },
-  });
+  function addEntry() {
+    setEntries([...entries, { id: crypto.randomUUID(), skinId: null, capeId: null }]);
+  }
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: 'entries',
-    keyName: 'fieldKey',
-  });
+  function removeEntry(id: string) {
+    setEntries(entries.filter((entry) => entry.id !== id));
+  }
 
-  const watchedEntries = useWatch({ control: form.control, name: 'entries' });
-
-  // フォームの内容をcontextへ同期
-  useEffect(() => {
-    const next: PackEntry[] = (watchedEntries ?? [])
-      .filter((row) => row.skinId !== null)
-      .map((row) => ({ id: row.id, skinId: row.skinId as string, capeId: row.capeId }));
-    setEntries(next);
-  }, [watchedEntries, setEntries]);
+  function updateEntry(id: string, skinId: string | null, capeId: string | null) {
+    setEntries(entries.map((entry) => (entry.id === id ? { ...entry, skinId, capeId } : entry)));
+  }
 
   return (
     <Card>
@@ -61,17 +43,14 @@ export function EntrySection() {
           ここに追加したスキンとマントの組み合わせがスキンパックに含まれます。
         </CardDescription>
         <CardAction>
-          <Button
-            type='button'
-            onClick={() => append({ id: crypto.randomUUID(), skinId: null, capeId: null })}
-          >
+          <Button type='button' onClick={addEntry}>
             <PlusIcon />
             追加
           </Button>
         </CardAction>
       </CardHeader>
       <CardContent>
-        {fields.length === 0 ? (
+        {entries.length === 0 ? (
           <Empty className='border border-dashed'>
             <EmptyHeader>
               <EmptyMedia variant='icon'>
@@ -85,21 +64,18 @@ export function EntrySection() {
           </Empty>
         ) : (
           <div className='flex flex-col gap-3'>
-            {fields.map((field, index) => {
-              const watchedEntry = watchedEntries?.find((entry) => entry.id === field.id);
-              return (
-                <EntryCard
-                  key={field.fieldKey}
-                  control={form.control}
-                  index={index}
-                  skinId={watchedEntry?.skinId ?? null}
-                  capeId={watchedEntry?.capeId ?? null}
-                  skins={skins}
-                  capes={capes}
-                  onRemove={() => remove(index)}
-                />
-              );
-            })}
+            {entries.map((entry) => (
+              <EntryCard
+                key={entry.id}
+                skinId={entry.skinId}
+                capeId={entry.capeId}
+                skins={skins}
+                capes={capes}
+                onSkinIdChange={(skinId) => updateEntry(entry.id, skinId, entry.capeId)}
+                onCapeIdChange={(capeId) => updateEntry(entry.id, entry.skinId, capeId)}
+                onRemove={() => removeEntry(entry.id)}
+              />
+            ))}
           </div>
         )}
       </CardContent>

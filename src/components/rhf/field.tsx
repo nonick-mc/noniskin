@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentProps, createContext, type ReactNode, useContext } from 'react';
+import { type ComponentProps, createContext, useContext } from 'react';
 import {
   type Control,
   type FieldValues,
@@ -40,27 +40,6 @@ export const ControlledField = <T extends FieldValues>({
         data-disabled={controller.field.disabled}
         {...props}
       />
-    </ControlledFieldContext.Provider>
-  );
-};
-
-type ControlledFieldProviderProps<T extends FieldValues> = {
-  name: Path<T>;
-  control: Control<T>;
-  disabled?: boolean;
-  children: ReactNode;
-};
-
-export const ControlledFieldProvider = <T extends FieldValues>({
-  name,
-  control,
-  disabled,
-  children,
-}: ControlledFieldProviderProps<T>) => {
-  const controller = useController({ name, control, disabled });
-  return (
-    <ControlledFieldContext.Provider value={controller as ControlledFieldContextValue}>
-      {children}
     </ControlledFieldContext.Provider>
   );
 };

@@ -98,7 +98,7 @@ function DownloadButton() {
     triggerBlobDownload(blob, `${slugify(validatedPackName, 'skin-pack')}.${extension}`);
   }
 
-  const canDownload = entries.length > 0;
+  const canDownload = entries.some((entry) => entry.skinId !== null);
 
   return (
     <div className='flex flex-col md:flex-row gap-2'>

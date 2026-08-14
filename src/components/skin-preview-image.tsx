@@ -48,16 +48,16 @@ export function SkinPreviewImage({ file, bodyType, capeFile, className }: SkinPr
               zoom: 0.8,
             }}
             onReady={({ viewer, canvasRef }) => {
-              // ReactSkinview3d自体が発火済みのloadSkin/loadCapeの完了は取得できないため、
-              // ここで改めて読み込み直し、完了を待ってからPNGとして書き出す
-              viewer.loadSkin(skinUrl).then(async () => {
-                if (capeUrl) {
-                  await viewer.loadCape(capeUrl);
-                }
-                viewer.render();
-                setImageUrl(canvasRef.toDataURL('image/png'));
-                viewer.dispose();
-              });
+              viewer
+                .loadSkin(skinUrl, { model: bodyType === 'slim' ? 'slim' : 'default' })
+                .then(async () => {
+                  if (capeUrl) {
+                    await viewer.loadCape(capeUrl);
+                  }
+                  viewer.render();
+                  setImageUrl(canvasRef.toDataURL('image/png'));
+                  viewer.dispose();
+                });
             }}
           />
         )

@@ -19,7 +19,7 @@ export type Skin = {
 
 export type PackEntry = {
   id: string;
-  skinId: Skin['id'];
+  skinId: Skin['id'] | null;
   capeId: Cape['id'] | null;
 };
 

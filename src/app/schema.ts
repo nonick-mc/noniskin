@@ -40,17 +40,5 @@ export function createSkinFormSchema() {
   });
 }
 
-const entryRowSchema = z.object({
-  id: z.string(),
-  skinId: z.string().nullable(),
-  capeId: z.string().nullable(),
-});
-
-export function createEntriesFormSchema() {
-  return z.object({ entries: z.array(entryRowSchema) });
-}
-
 export type CapeFormValues = z.infer<ReturnType<typeof createCapeFormSchema>>;
 export type SkinFormValues = z.infer<ReturnType<typeof createSkinFormSchema>>;
-export type EntryRowValues = z.infer<typeof entryRowSchema>;
-export type EntriesFormValues = z.infer<ReturnType<typeof createEntriesFormSchema>>;
