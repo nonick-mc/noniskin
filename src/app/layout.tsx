@@ -40,10 +40,8 @@ export default function RootLayout({
         notoSansJP.variable,
       )}
     >
-      <body>
-        <ThemeProvider>
-          <TooltipProvider>{children}</TooltipProvider>
-        </ThemeProvider>
+      <body className='dark'>
+        <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>
   );
