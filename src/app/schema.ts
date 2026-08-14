@@ -3,6 +3,11 @@ import { getImageDimensions } from '@/lib/skin-pack';
 
 export function createCapeFormSchema() {
   return z.object({
+    name: z
+      .string()
+      .trim()
+      .min(1, '名前を入力してください')
+      .max(50, '名前は50文字以内で入力してください'),
     file: z
       .custom<File | null>((value) => value === null || value instanceof File)
       .refine((file) => file !== null, 'ファイルを選択してください')
@@ -17,6 +22,11 @@ export function createCapeFormSchema() {
 
 export function createSkinFormSchema() {
   return z.object({
+    name: z
+      .string()
+      .trim()
+      .min(1, '名前を入力してください')
+      .max(50, '名前は50文字以内で入力してください'),
     file: z
       .custom<File | null>((value) => value === null || value instanceof File)
       .refine((file) => file !== null, 'ファイルを選択してください')

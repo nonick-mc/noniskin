@@ -13,6 +13,7 @@ import {
   ControlledFieldLabel,
 } from '@/components/rhf/field';
 import { ControlledImageUpload } from '@/components/rhf/image-upload';
+import { ControlledInput } from '@/components/rhf/input';
 import { ControlledSelect, ControlledSelectTrigger } from '@/components/rhf/select';
 import { SkinPreviewImage } from '@/components/skin-preview-image';
 import { Button } from '@/components/ui/button';
@@ -37,7 +38,7 @@ export function SkinGroup() {
   const [open, setOpen] = useState(false);
   const form = useForm({
     resolver: zodResolver(skinFormSchema),
-    defaultValues: { file: null as File | null, bodyType: 'wide' as BodyType },
+    defaultValues: { name: '', file: null as File | null, bodyType: 'wide' as BodyType },
   });
 
   const onSubmit = form.handleSubmit((values) => {
@@ -49,6 +50,7 @@ export function SkinGroup() {
     addSkin({
       id: crypto.randomUUID(),
       name,
+      displayName: values.name,
       file,
       fileName,
       bodyType: values.bodyType,
@@ -77,6 +79,13 @@ export function SkinGroup() {
             </DialogHeader>
             <FormProvider {...form}>
               <form onSubmit={onSubmit} className='flex flex-col gap-4'>
+                <ControlledField control={form.control} name='name'>
+                  <FieldContent>
+                    <ControlledFieldLabel>名前</ControlledFieldLabel>
+                    <ControlledFieldError />
+                  </FieldContent>
+                  <ControlledInput placeholder='スキンの名前' />
+                </ControlledField>
                 <ControlledField control={form.control} name='file'>
                   <FieldContent>
                     <ControlledFieldLabel>スキン画像</ControlledFieldLabel>
@@ -156,7 +165,7 @@ function SkinThumbnail({
         render={
           <div
             className='group relative aspect-1/2 overflow-hidden rounded-lg border border-border bg-muted'
-            title={`${skin.name}(${BodyTypeLabels[skin.bodyType]})`}
+            title={`${skin.displayName}(${BodyTypeLabels[skin.bodyType]})`}
           >
             <SkinPreviewImage
               file={skin.file}
@@ -171,7 +180,7 @@ function SkinThumbnail({
               <button
                 type='button'
                 onClick={onRemove}
-                title={`${skin.name}を削除`}
+                title={`${skin.displayName}を削除`}
                 className='absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 transition-opacity focus-visible:opacity-100 group-hover:opacity-100'
               >
                 <Trash2Icon className='size-5 text-destructive' />

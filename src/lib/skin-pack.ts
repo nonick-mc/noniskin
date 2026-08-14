@@ -86,6 +86,20 @@ export function buildSkinsJson(entries: PackEntry[], skins: Skin[], capes: Cape[
   };
 }
 
+export function buildLangFile(entries: PackEntry[], skins: Skin[], capes: Cape[]): string {
+  const lines = entries.flatMap((entry) => {
+    const skin = skins.find((s) => s.id === entry.skinId);
+    if (!skin) return [];
+
+    const cape = entry.capeId ? capes.find((c) => c.id === entry.capeId) : undefined;
+    const displayName = cape ? `${skin.displayName} ${cape.displayName}` : skin.displayName;
+
+    return [`skin.custom.${skin.name}=${displayName}`];
+  });
+
+  return lines.join('\n');
+}
+
 type BuildSkinPackParams = {
   packName: string;
   capes: Cape[];
@@ -104,6 +118,7 @@ export async function buildSkinPack({
   zip.file('manifest.json', JSON.stringify(buildManifest(packName), null, 2));
   zip.file('skins.json', JSON.stringify(buildSkinsJson(entries, skins, capes), null, 2));
   zip.file('geometry.json', JSON.stringify(geometry, null, 2));
+  zip.file('texts/en_US.lang', buildLangFile(entries, skins, capes));
 
   for (const cape of capes) {
     zip.file(cape.fileName, cape.file);
