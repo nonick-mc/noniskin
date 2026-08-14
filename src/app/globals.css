@@ -4,6 +4,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@utility bg-checkerboard {
+  background-image: conic-gradient(
+    var(--color-zinc-900) 90deg,
+    var(--color-zinc-800) 90deg 180deg,
+    var(--color-zinc-900) 180deg 270deg,
+    var(--color-zinc-800) 270deg
+  );
+  background-size: 36px 36px;
+}
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);

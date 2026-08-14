@@ -12,7 +12,7 @@ export function Navbar() {
             <Avatar render={<Link href='https://nonick.net' />}>
               <AvatarImage src='https://github.com/nonick-mc.png' alt="nonick's icon" />
             </Avatar>
-            <p className='font-black font-doto text-2xl'>noniskin</p>
+            <p className='font-black font-doto text-2xl select-none'>noniskin</p>
           </div>
         </nav>
       </div>
