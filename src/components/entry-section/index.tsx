@@ -24,15 +24,15 @@ export function EntrySection() {
   const { skins, capes, entries, setEntries } = useSkinPackContext();
 
   function addEntry() {
-    setEntries([...entries, { id: crypto.randomUUID(), skinId: null, capeId: null }]);
+    setEntries([...entries, { id: crypto.randomUUID(), name: '', skinId: null, capeId: null }]);
   }
 
   function removeEntry(id: string) {
     setEntries(entries.filter((entry) => entry.id !== id));
   }
 
-  function updateEntry(id: string, skinId: string | null, capeId: string | null) {
-    setEntries(entries.map((entry) => (entry.id === id ? { ...entry, skinId, capeId } : entry)));
+  function updateEntry(id: string, patch: Partial<Omit<(typeof entries)[number], 'id'>>) {
+    setEntries(entries.map((entry) => (entry.id === id ? { ...entry, ...patch } : entry)));
   }
 
   return (
@@ -67,12 +67,14 @@ export function EntrySection() {
             {entries.map((entry) => (
               <EntryCard
                 key={entry.id}
+                name={entry.name}
                 skinId={entry.skinId}
                 capeId={entry.capeId}
                 skins={skins}
                 capes={capes}
-                onSkinIdChange={(skinId) => updateEntry(entry.id, skinId, entry.capeId)}
-                onCapeIdChange={(capeId) => updateEntry(entry.id, entry.skinId, capeId)}
+                onNameChange={(name) => updateEntry(entry.id, { name })}
+                onSkinIdChange={(skinId) => updateEntry(entry.id, { skinId })}
+                onCapeIdChange={(capeId) => updateEntry(entry.id, { capeId })}
                 onRemove={() => removeEntry(entry.id)}
               />
             ))}

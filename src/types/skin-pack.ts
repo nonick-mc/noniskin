@@ -3,7 +3,6 @@ export type BodyType = 'wide' | 'slim';
 export type Cape = {
   id: string;
   name: string;
-  displayName: string;
   file: File;
   fileName: string;
 };
@@ -11,7 +10,6 @@ export type Cape = {
 export type Skin = {
   id: string;
   name: string;
-  displayName: string;
   file: File;
   fileName: string;
   bodyType: BodyType;
@@ -19,6 +17,7 @@ export type Skin = {
 
 export type PackEntry = {
   id: string;
+  name: string;
   skinId: Skin['id'] | null;
   capeId: Cape['id'] | null;
 };

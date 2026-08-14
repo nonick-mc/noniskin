@@ -13,7 +13,6 @@ import {
   ControlledFieldLabel,
 } from '@/components/rhf/field';
 import { ControlledImageUpload } from '@/components/rhf/image-upload';
-import { ControlledInput } from '@/components/rhf/input';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -36,7 +35,7 @@ export function CapeGroup() {
 
   const form = useForm({
     resolver: zodResolver(capeFormSchema),
-    defaultValues: { name: '', file: null as File | null },
+    defaultValues: { file: null as File | null },
   });
 
   const onSubmit = form.handleSubmit((values) => {
@@ -45,7 +44,7 @@ export function CapeGroup() {
     const name = crypto.randomUUID();
     const fileName = uniqueFileName(slugify(name, 'cape'), existingFileNames, '.png');
 
-    addCape({ id: crypto.randomUUID(), name, displayName: values.name, file, fileName });
+    addCape({ id: crypto.randomUUID(), name, file, fileName });
     form.reset();
     setOpen(false);
   });
@@ -70,13 +69,6 @@ export function CapeGroup() {
             </DialogHeader>
             <FormProvider {...form}>
               <form onSubmit={onSubmit} className='flex flex-col gap-4'>
-                <ControlledField control={form.control} name='name'>
-                  <FieldContent>
-                    <ControlledFieldLabel>名前</ControlledFieldLabel>
-                    <ControlledFieldError />
-                  </FieldContent>
-                  <ControlledInput placeholder='マントの名前' />
-                </ControlledField>
                 <ControlledField control={form.control} name='file'>
                   <FieldContent>
                     <ControlledFieldLabel>画像ファイル</ControlledFieldLabel>
@@ -135,10 +127,7 @@ function CapeThumbnail({
     <Tooltip disabled={!inUse}>
       <TooltipTrigger
         render={
-          <div
-            className='group relative aspect-10/16 overflow-hidden rounded-lg border border-border bg-muted'
-            title={cape.displayName}
-          >
+          <div className='group relative aspect-10/16 overflow-hidden rounded-lg border border-border bg-muted'>
             <CapePreview file={cape.file} />
             {inUse ? (
               <div className='absolute top-1 right-1 flex size-5 items-center justify-center rounded-full bg-background/90 text-muted-foreground'>
