@@ -81,8 +81,8 @@ export function buildSkinsJson(entries: PackEntry[], skins: Skin[], capes: Cape[
         },
       ];
     }),
-    serialize_name: 'customSkinPack',
-    localization_name: 'customSkinPack',
+    serialize_name: 'Custom',
+    localization_name: 'Custom',
   };
 }
 
