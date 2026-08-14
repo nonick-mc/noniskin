@@ -56,14 +56,16 @@ export function EntryCard({
           </div>
         </div>
       </Card>
-      <Button
-        onClick={onRemove}
-        variant='destructive'
-        className='w-full gap-1.5 lg:h-full lg:w-9 lg:gap-0 lg:p-0'
-      >
-        <Trash2Icon />
-        <span className='lg:hidden'>削除</span>
-      </Button>
+      <div>
+        <Button
+          onClick={onRemove}
+          variant='destructive'
+          className='max-lg:w-full gap-1.5 lg:h-full'
+        >
+          <Trash2Icon />
+          <span className='lg:hidden'>削除</span>
+        </Button>
+      </div>
     </div>
   );
 }
