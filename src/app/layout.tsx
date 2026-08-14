@@ -1,8 +1,7 @@
 import { Doto, Geist_Mono, Noto_Sans_JP } from 'next/font/google';
 
 import './globals.css';
-import type { Metadata } from 'next';
-import { ThemeProvider } from '@/components/theme-provider';
+import type { Metadata, Viewport } from 'next';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
@@ -21,6 +20,11 @@ const doto = Doto({
 export const metadata: Metadata = {
   title: 'noniskin',
   description: 'カスタムマント付きのスキンパックを作成するWebアプリ',
+  metadataBase: new URL('https://skin.nonick.net'),
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0073f5',
 };
 
 export default function RootLayout({
