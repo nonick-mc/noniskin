@@ -19,18 +19,18 @@ export function CapeSelect({ control, index, capes }: CapeSelectProps) {
   return (
     <ControlledFieldProvider control={control} name={`entries.${index}.capeId`}>
       <ControlledSelect disabled={capes.length === 0}>
-        <ControlledSelectTrigger className='h-full! w-full items-stretch p-1.5 px-3 [&>svg]:self-center'>
+        <ControlledSelectTrigger className='aspect-square h-auto! w-full items-stretch p-1.5 px-3 [&>svg]:self-center'>
           <SelectValue>
             {(value: string | null) => {
               const cape = capes.find((c) => c.id === value);
               return (
-                <span className='relative rounded-md size-full p-6'>
+                <span className='relative rounded-md size-full md:p-6'>
                   {cape ? (
                     <CapePreview file={cape.file} />
                   ) : (
                     <div className='absolute inset-0 flex flex-col items-center justify-center gap-2'>
                       <BanIcon className='size-4 text-muted-foreground' />
-                      <p>マントなし</p>
+                      <p className='max-lg:hidden'>マントなし</p>
                     </div>
                   )}
                 </span>

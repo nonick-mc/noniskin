@@ -29,7 +29,11 @@ export function SkinPreviewImage({ file, bodyType, capeFile, className }: SkinPr
     <div className={className}>
       {imageUrl ? (
         // biome-ignore lint/performance/noImgElement: ReactSkinview3dのcanvasから書き出したPNGのため
-        <img src={imageUrl} alt='' className='size-full object-cover [image-rendering:pixelated]' />
+        <img
+          src={imageUrl}
+          alt=''
+          className='size-full object-contain [image-rendering:pixelated]'
+        />
       ) : (
         skinUrl && (
           <ReactSkinview3d

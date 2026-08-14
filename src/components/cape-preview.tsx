@@ -32,7 +32,7 @@ export function CapePreview({ file }: { file: File }) {
       ref={canvasRef}
       width={CapePreviewCrop.sWidth}
       height={CapePreviewCrop.sHeight}
-      className='size-full [image-rendering:pixelated]'
+      className='size-full object-contain [image-rendering:pixelated]'
     />
   );
 }

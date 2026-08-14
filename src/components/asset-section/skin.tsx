@@ -125,7 +125,7 @@ export function SkinGroup() {
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className='grid grid-cols-2 gap-2'>
+          <div className='grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-2'>
             {skins.map((skin) => (
               <SkinThumbnail
                 key={skin.id}

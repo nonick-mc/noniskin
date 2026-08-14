@@ -33,18 +33,18 @@ export function EntryCard({
   const cape = capes.find((c) => c.id === capeId);
 
   return (
-    <div className='flex items-stretch gap-2'>
-      <Card className='flex-1 flex-col gap-3 p-4'>
-        <div className='flex w-full items-center gap-2'>
-          <div className='min-w-0 flex-1 self-stretch'>
+    <div className='flex flex-col items-stretch gap-2 lg:flex-row'>
+      <Card className='min-w-0 flex-1 flex-col gap-3 p-4'>
+        <div className='flex items-center gap-2'>
+          <div className='min-w-0 flex-1'>
             <SkinSelect control={control} index={index} skins={skins} />
           </div>
-          <PlusIcon className='size-6 shrink-0 text-muted-foreground' />
-          <div className='min-w-0 flex-1 self-stretch'>
+          <PlusIcon className='size-4 shrink-0 text-muted-foreground' />
+          <div className='min-w-0 flex-1'>
             <CapeSelect control={control} index={index} capes={capes} />
           </div>
-          <ArrowRightIcon className='size-6 shrink-0 text-muted-foreground' />
-          <div className='w-100 relative aspect-3/2 shrink-0 overflow-hidden rounded-lg border border-border bg-checkerboard'>
+          <ArrowRightIcon className='size-4 shrink-0 text-muted-foreground' />
+          <div className='relative aspect-square min-w-0 flex-1 overflow-hidden rounded-lg border border-border bg-checkerboard'>
             {skin && (
               <SkinPreview3d
                 file={skin.file}
@@ -56,11 +56,14 @@ export function EntryCard({
           </div>
         </div>
       </Card>
-      <div>
-        <Button onClick={onRemove} size='icon' className='h-full' variant='destructive'>
-          <Trash2Icon />
-        </Button>
-      </div>
+      <Button
+        onClick={onRemove}
+        variant='destructive'
+        className='w-full gap-1.5 lg:h-full lg:w-9 lg:gap-0 lg:p-0'
+      >
+        <Trash2Icon />
+        <span className='lg:hidden'>削除</span>
+      </Button>
     </div>
   );
 }

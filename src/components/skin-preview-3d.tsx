@@ -46,7 +46,7 @@ export function SkinPreview3d({ file, bodyType, capeFile, className }: SkinPrevi
           capeUrl={capeUrl ?? undefined}
           options={{
             model: bodyType === 'slim' ? 'slim' : 'default',
-            zoom: 0.8,
+            zoom: 0.9,
             animation: new WalkingAnimation(),
           }}
           onReady={({ viewer }) => {

@@ -18,12 +18,12 @@ export function SkinSelect({ control, index, skins }: SkinSelectProps) {
   return (
     <ControlledFieldProvider control={control} name={`entries.${index}.skinId`}>
       <ControlledSelect disabled={skins.length === 0}>
-        <ControlledSelectTrigger className='h-full! w-full items-stretch p-1.5 px-3 [&>svg]:self-center'>
+        <ControlledSelectTrigger className='aspect-square h-auto! w-full items-stretch p-1.5 px-3 [&>svg]:self-center'>
           <SelectValue>
             {(value: string | null) => {
               const skin = skins.find((s) => s.id === value);
               return (
-                <span className='relative size-full'>
+                <span className='relative size-full overflow-hidden rounded-md'>
                   {skin && (
                     <SkinPreviewImage
                       file={skin.file}
@@ -44,7 +44,7 @@ export function SkinSelect({ control, index, skins }: SkinSelectProps) {
                 value={skin.id}
                 className='flex-col items-stretch p-0.5 pr-0.5'
               >
-                <span className='relative aspect-1/2 w-full'>
+                <span className='relative aspect-1/2 w-full overflow-hidden rounded-md'>
                   <SkinPreviewImage
                     file={skin.file}
                     bodyType={skin.bodyType}
