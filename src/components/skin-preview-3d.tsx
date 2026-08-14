@@ -51,7 +51,7 @@ export function SkinPreview3d({ file, bodyType, capeFile, className }: SkinPrevi
           }}
           onReady={({ viewer }) => {
             viewer.autoRotate = true;
-            viewer.autoRotateSpeed = 1;
+            viewer.autoRotateSpeed = 0.5;
           }}
         />
       )}

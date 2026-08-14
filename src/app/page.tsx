@@ -1,7 +1,6 @@
 'use client';
 
 import { BoxIcon, FolderArchiveIcon } from 'lucide-react';
-import { useState } from 'react';
 import { AssetSection } from '@/components/asset-section';
 import { EntrySection } from '@/components/entry-section';
 import { Navbar } from '@/components/navbar';
@@ -14,8 +13,6 @@ import { buildSkinPack, slugify, triggerBlobDownload } from '@/lib/skin-pack';
 import { SkinPackProvider, useSkinPackContext } from './context';
 
 export default function Page() {
-  const [packName, setPackName] = useState('');
-
   return (
     <SkinPackProvider>
       <Navbar />
@@ -23,36 +20,44 @@ export default function Page() {
         <AssetSection />
 
         <div className='flex min-w-0 flex-1 flex-col gap-6'>
-          <Card>
-            <CardHeader>
-              <CardTitle>全般設定</CardTitle>
-            </CardHeader>
-            <CardContent className='flex flex-col gap-4'>
-              <Field orientation='responsive'>
-                <FieldContent>
-                  <Label htmlFor='pack-name'>スキンパックの名前</Label>
-                </FieldContent>
-                <Input
-                  id='pack-name'
-                  value={packName}
-                  onChange={(event) => setPackName(event.target.value)}
-                  placeholder='My Skin Pack'
-                />
-              </Field>
-            </CardContent>
-          </Card>
+          <PackInfoCard />
 
           <EntrySection />
 
-          <DownloadButton packName={packName} />
+          <DownloadButton />
         </div>
       </div>
     </SkinPackProvider>
   );
 }
 
-function DownloadButton({ packName }: { packName: string }) {
-  const { capes, skins, entries } = useSkinPackContext();
+function PackInfoCard() {
+  const { packName, setPackName } = useSkinPackContext();
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>全般設定</CardTitle>
+      </CardHeader>
+      <CardContent className='flex flex-col gap-4'>
+        <Field orientation='responsive'>
+          <FieldContent>
+            <Label htmlFor='pack-name'>スキンパックの名前</Label>
+          </FieldContent>
+          <Input
+            id='pack-name'
+            value={packName}
+            onChange={(event) => setPackName(event.target.value)}
+            placeholder='My Skin Pack'
+          />
+        </Field>
+      </CardContent>
+    </Card>
+  );
+}
+
+function DownloadButton() {
+  const { packName, capes, skins, entries } = useSkinPackContext();
   const validatedPackName = packName.trim() === '' ? 'My Skin Pack' : packName;
 
   async function handleDownload(extension: 'mcpack' | 'zip') {

@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PaletteIcon, PlusIcon } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useSkinPackContext } from '@/app/context';
 import { createEntriesFormSchema } from '@/app/schema';
@@ -28,7 +28,7 @@ import { EntryCard } from './entry-card';
 const entriesFormSchema = createEntriesFormSchema();
 
 export function EntrySection() {
-  const { skins, capes, setEntries } = useSkinPackContext();
+  const { isHydrated, skins, capes, entries: persistedEntries, setEntries } = useSkinPackContext();
 
   const form = useForm({
     resolver: zodResolver(entriesFormSchema),
@@ -37,7 +37,7 @@ export function EntrySection() {
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control: form.control,
     name: 'entries',
     keyName: 'fieldKey',
@@ -45,13 +45,23 @@ export function EntrySection() {
 
   const watchedEntries = useWatch({ control: form.control, name: 'entries' });
 
-  // フォームの内容(選択済みの行のみ)をcontextへ一方向同期する
+  // フォームの内容をcontextへ同期
   useEffect(() => {
     const next: PackEntry[] = (watchedEntries ?? [])
       .filter((row) => row.skinId !== null)
       .map((row) => ({ id: row.id, skinId: row.skinId as string, capeId: row.capeId }));
     setEntries(next);
   }, [watchedEntries, setEntries]);
+
+  // IndexedDBからの復元時、フォーム側にも一度だけ反映
+  const hasHydratedFormRef = useRef(false);
+  useEffect(() => {
+    if (!isHydrated || hasHydratedFormRef.current) return;
+    hasHydratedFormRef.current = true;
+    if (persistedEntries.length > 0) {
+      replace(persistedEntries.map((entry) => ({ ...entry })));
+    }
+  }, [isHydrated, persistedEntries, replace]);
 
   return (
     <Card>
