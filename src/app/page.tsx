@@ -1,7 +1,7 @@
 'use client';
 
 import { BoxIcon, FolderArchiveIcon, ImageIcon, PencilIcon } from 'lucide-react';
-import { useMediaQuery } from 'usehooks-ts';
+import { useId } from 'react';
 import { AssetSection } from '@/components/asset-section';
 import { EntrySection } from '@/components/entry-section';
 import { Navbar } from '@/components/navbar';
@@ -15,40 +15,32 @@ import { buildSkinPack, slugify, triggerBlobDownload } from '@/lib/skin-pack';
 import { SkinPackProvider, useSkinPackContext } from './context';
 
 export default function Page() {
-  const isDesktop = useMediaQuery('(min-width: 1024px)', {
-    defaultValue: false,
-    initializeWithValue: false,
-  });
-
   return (
     <SkinPackProvider>
       <Navbar />
       <div className='mx-auto flex w-full max-w-350 flex-col gap-6 p-6 lg:flex-row'>
-        {isDesktop ? (
-          <>
+        <div className='hidden lg:contents'>
+          <AssetSection />
+          <EditorContent />
+        </div>
+        <Tabs defaultValue='asset' className='w-full gap-6 lg:hidden'>
+          <TabsList className='w-full'>
+            <TabsTrigger value='asset'>
+              <ImageIcon className='mt-0.5' />
+              アセット
+            </TabsTrigger>
+            <TabsTrigger value='editor'>
+              <PencilIcon className='mt-0.5' />
+              エディター
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value='asset'>
             <AssetSection />
+          </TabsContent>
+          <TabsContent value='editor'>
             <EditorContent />
-          </>
-        ) : (
-          <Tabs defaultValue='asset' className='w-full gap-6'>
-            <TabsList className='w-full'>
-              <TabsTrigger value='asset'>
-                <ImageIcon className='mt-0.5' />
-                アセット
-              </TabsTrigger>
-              <TabsTrigger value='editor'>
-                <PencilIcon className='mt-0.5' />
-                エディター
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value='asset'>
-              <AssetSection />
-            </TabsContent>
-            <TabsContent value='editor'>
-              <EditorContent />
-            </TabsContent>
-          </Tabs>
-        )}
+          </TabsContent>
+        </Tabs>
       </div>
     </SkinPackProvider>
   );
@@ -68,6 +60,7 @@ function EditorContent() {
 
 function PackInfoCard() {
   const { packName, setPackName } = useSkinPackContext();
+  const packNameId = useId();
 
   return (
     <Card>
@@ -77,10 +70,10 @@ function PackInfoCard() {
       <CardContent className='flex flex-col gap-4'>
         <Field orientation='responsive'>
           <FieldContent>
-            <Label htmlFor='pack-name'>スキンパックの名前</Label>
+            <Label htmlFor={packNameId}>スキンパックの名前</Label>
           </FieldContent>
           <Input
-            id='pack-name'
+            id={packNameId}
             value={packName}
             onChange={(event) => setPackName(event.target.value)}
             placeholder='My Skin Pack'
