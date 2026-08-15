@@ -16,6 +16,7 @@ export function SkinPreview3d({ file, bodyType, capeFile, className }: SkinPrevi
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const viewerRef = useRef<SkinViewer | null>(null);
+  const isVisibleRef = useRef(true);
   const [size, setSize] = useState({ width: 0, height: 0 });
   const skinUrl = useObjectUrl(file);
   const capeUrl = useObjectUrl(capeFile);
@@ -29,6 +30,22 @@ export function SkinPreview3d({ file, bodyType, capeFile, className }: SkinPrevi
       const { width, height } = entry.contentRect;
       setSize({ width, height });
       viewerRef.current?.setSize(width, height);
+    });
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // 画面外にある間はrenderPausedでレンダリング/アニメーションループを停止
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisibleRef.current = entry.isIntersecting;
+      if (viewerRef.current) {
+        viewerRef.current.renderPaused = !entry.isIntersecting;
+      }
     });
     observer.observe(element);
 
@@ -55,8 +72,7 @@ export function SkinPreview3d({ file, bodyType, capeFile, className }: SkinPrevi
       zoom: 0.9,
       animation: new WalkingAnimation(),
     });
-    viewer.autoRotate = true;
-    viewer.autoRotateSpeed = 0.5;
+    viewer.renderPaused = !isVisibleRef.current;
     viewerRef.current = viewer;
 
     return () => {
