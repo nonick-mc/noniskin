@@ -26,7 +26,18 @@ export function ImageUpload({
   disabled,
   invalid,
 }: ImageUploadProps) {
-  const [, { clearFiles, openFileDialog, getInputProps }] = useFileUpload({
+  const [
+    { isDragging },
+    {
+      clearFiles,
+      openFileDialog,
+      getInputProps,
+      handleDragEnter,
+      handleDragLeave,
+      handleDragOver,
+      handleDrop,
+    },
+  ] = useFileUpload({
     accept: 'image/png',
     multiple: false,
     onFilesChange: (files) => {
@@ -37,12 +48,18 @@ export function ImageUpload({
   const previewUrl = useObjectUrl(value);
 
   return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: 画像のドラッグ&ドロップ用のドロップゾーン
     <div
       data-invalid={invalid}
       className={cn(
-        'w-full aspect-square relative overflow-hidden rounded-lg border data-[invalid=true]:border-destructive',
+        'w-full aspect-square relative overflow-hidden rounded-lg border transition-colors data-[invalid=true]:border-destructive',
+        isDragging && 'border-primary bg-primary/5',
         className,
       )}
+      onDragEnter={disabled ? undefined : handleDragEnter}
+      onDragLeave={disabled ? undefined : handleDragLeave}
+      onDragOver={disabled ? undefined : handleDragOver}
+      onDrop={disabled ? undefined : handleDrop}
     >
       {previewUrl ? (
         <>
@@ -66,11 +83,12 @@ export function ImageUpload({
           </Button>
         </>
       ) : (
-        <div className='flex items-center justify-center w-full h-full'>
+        <div className='flex flex-col items-center justify-center gap-2 w-full h-full p-2 text-center'>
           <Button type='button' disabled={disabled} onClick={openFileDialog}>
             <UploadCloudIcon />
             画像をアップロード
           </Button>
+          <p className='text-xs text-muted-foreground'>または、画像をドラッグ&ドロップ</p>
           <input {...getInputProps({ id: name, name, disabled, onBlur })} className='sr-only' />
         </div>
       )}
