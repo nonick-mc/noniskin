@@ -73,6 +73,8 @@ export function SkinPreview3d({ file, bodyType, capeFile, className }: SkinPrevi
       animation: new WalkingAnimation(),
     });
     viewer.renderPaused = !isVisibleRef.current;
+    viewer.autoRotate = true;
+    viewer.controls.enableZoom = false;
     viewerRef.current = viewer;
 
     return () => {
