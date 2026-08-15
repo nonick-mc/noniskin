@@ -19,6 +19,7 @@ export function Navbar() {
           <Button
             render={<Link href={'https://youtu.be/txEosQ8LXHQ'} target='_blank' />}
             variant={'outline'}
+            nativeButton={false}
           >
             <CircleHelpIcon className='mt-0.5' />
             マントの導入方法
