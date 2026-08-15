@@ -1,5 +1,6 @@
 'use client';
 
+import { SiGithub } from '@icons-pack/react-simple-icons';
 import { CircleHelpIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarImage } from './ui/avatar';
@@ -16,14 +17,34 @@ export function Navbar() {
             </Avatar>
             <p className='font-black font-doto text-2xl select-none'>noniskin</p>
           </div>
-          <Button
-            render={<Link href={'https://youtu.be/txEosQ8LXHQ'} target='_blank' />}
-            variant={'outline'}
-            nativeButton={false}
-          >
-            <CircleHelpIcon className='mt-0.5' />
-            マントの導入方法
-          </Button>
+          <div className='flex gap-1'>
+            <Button
+              render={<Link href={'https://github.com/nonick-mc/noniskin'} target='_blank' />}
+              variant='outline'
+              size='icon'
+              nativeButton={false}
+            >
+              <SiGithub />
+            </Button>
+            <Button
+              className='sm:hidden'
+              render={<Link href={'https://youtu.be/txEosQ8LXHQ'} target='_blank' />}
+              variant='outline'
+              size='icon'
+              nativeButton={false}
+            >
+              <CircleHelpIcon className='mt-0.5' />
+            </Button>
+            <Button
+              className='max-sm:hidden'
+              render={<Link href={'https://youtu.be/txEosQ8LXHQ'} target='_blank' />}
+              variant='outline'
+              nativeButton={false}
+            >
+              <CircleHelpIcon className='mt-0.5' />
+              マントの導入方法
+            </Button>
+          </div>
         </nav>
       </div>
     </header>
